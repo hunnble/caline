@@ -2,30 +2,32 @@
 
 'use strict';
 
-let program = require('commander');
-let fs = require('fs');
-let _ = require('lodash');
+const program = require('commander');
+const fs = require('fs');
+const _ = require('lodash');
+
+const line = require('../src/caline');
+const output = require('../src/output');
+
+let config = {};
 
 program
     .version('1.0.0')
-    .option('-c --config', 'Read config from file')
-    .option('-e --exclude', 'Exclude file types')
-    .option('-i --include', 'Include file types')
-    .option('-o --out', 'Output type')
+    .option('-i --include <name>', 'including file types, splitted by comma')
+    .option('-e --exclude <name>', 'excluding file types, splitted by comma')
+    .option('-p --excludePaths <name>', 'excluding paths, splitted by comma')
     .parse(process.argv);
 
-if (program.config) {
-
-}
-
 if (program.include) {
-
-} else if (program.exclude) {
-
+    config.include = program.include.split(',');
 }
 
-if (program.out) {
-
-} else {
-
+if (program.exclude) {
+    config.exclude = program.exclude.split(',');
 }
+
+if (program.excludePaths) {
+    config.excludePaths = program.excludePaths.split(',');
+}
+
+output(line('./', config));

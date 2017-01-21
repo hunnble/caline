@@ -77,14 +77,18 @@ function caline(context, config={}) {
                     result[name].blank += blankNum;
                 }
             } else if (stat.isDirectory()) {
-                paths.push(file);
+                if (config.excludePaths) {
+                    for (let excludePath of config.excludePaths) {
+                        if (!_.includes(file, excludePath)) {
+                            paths.push(file);
+                        }
+                    }
+                }
             }
         });
     }
 
     return result;
 }
-
-output(caline('./'), 0);
 
 module.exports = caline;

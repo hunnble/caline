@@ -3,13 +3,9 @@
 const _ = require('lodash');
 const colors = require('colors/safe');
 
-const ex = { md: { files: 5, code: 461, comment: 14, blank: 200 },
-  json: { files: 4, code: 338, comment: 0, blank: 4 },
-  JavaScript: { files: 1054, code: 39245, comment: 2200, blank: 4602 },
-  sample: { files: 9, code: 431, comment: 0, blank: 74 },
-  yml: { files: 1, code: 5, comment: 0, blank: 1 } }
-
 /**
+ * 命令行打印行数统计信息
+ * @param datas {Array}
  * @param order {Number} 0=aesc 1=desc
  */
 function outputTable(datas, order=1) {
