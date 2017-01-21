@@ -5,8 +5,15 @@ const path = require('path');
 const _ = require('lodash');
 
 const lang = require('./lang');
+const output = require('./output');
 
-function caline(context, config) {
+/**
+ * 统计代码行数
+ * @param context {String} 目标路径
+ * @config config {Object} 配置项
+ * @return result {Object} 文件(语言)类型为键，值包含code(代码行数)、comment(注释行数)、blank(空行数)
+ */
+function caline(context, config={}) {
     let paths = [context];
     let result = {};
     while(paths.length > 0) {
@@ -23,8 +30,10 @@ function caline(context, config) {
                 let name = path.extname(file).slice(1);
                 if (
                     !name ||
-                    config.include && _.indexOf(config.include, name) === -1 ||
-                    config.exclude && _.indexOf(config.exclude, name) !== -1
+                    config.include &&
+                    _.indexOf(config.include, name) === -1 ||
+                    config.exclude &&
+                    _.indexOf(config.exclude, name) !== -1
                 ) {
                     return;
                 }
@@ -70,13 +79,12 @@ function caline(context, config) {
             } else if (stat.isDirectory()) {
                 paths.push(file);
             }
-
         });
     }
+
+    return result;
 }
 
-caline('./', {
-    exclude: ['.git', 'node_modules']
-})
+output(caline('./'), 0);
 
 module.exports = caline;
